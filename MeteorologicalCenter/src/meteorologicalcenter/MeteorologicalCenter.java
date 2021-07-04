@@ -82,7 +82,8 @@ public class MeteorologicalCenter implements Observer {
                     weatherStationState.get(i - 1)[j] = ((Transmitter) o).getState()[j];
                     changedValues[j] = true;
                 }
-            } else {
+            }
+            else {
                 for (int j = 0; j < weatherStationState.get(i - 1).length; j++) {
                     if (weatherStationState.get(i - 1)[j] != ((Transmitter) o).getState()[j]) {
                         weatherStationState.get(i - 1)[j] = ((Transmitter) o).getState()[j];
@@ -186,13 +187,17 @@ public class MeteorologicalCenter implements Observer {
     }
 
     public void attachMeteorologicalCenterTransmitter(MeteorologicalCenterTransmitter meteorologicalCenterTransmitter) {
-        if (this.meteorologicalCenterTransmitter == null)
+        if (this.meteorologicalCenterTransmitter == null){
             this.meteorologicalCenterTransmitter = meteorologicalCenterTransmitter;
+            this.meteorologicalCenterTransmitter.startTransmitter();
+        }
     }
 
-    public void detachMeteoroogicalCenterTransmitter() {
-        if(this.meteorologicalCenterTransmitter != null)
+    public void detachMeteorologicalCenterTransmitter() {
+        if(this.meteorologicalCenterTransmitter != null){
+            this.meteorologicalCenterTransmitter.interruptTransmitter();
             this.meteorologicalCenterTransmitter = null;
+        }
     }
 
     public String getType(){
@@ -213,6 +218,14 @@ public class MeteorologicalCenter implements Observer {
 
     public void deleteObserver(Observer observer) {
         meteorologicalCenterTransmitter.deleteObserver(observer);
+    }
+
+    public ArrayList<SensorsSetTransmitter> getObservedWeatherStation() {
+        return observedWeatherStation;
+    }
+
+    public MeteorologicalCenterTransmitter getMeteorologicalCenterTransmitter() {
+        return meteorologicalCenterTransmitter;
     }
 }
 

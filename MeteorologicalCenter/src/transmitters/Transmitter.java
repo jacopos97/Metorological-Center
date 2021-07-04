@@ -29,7 +29,7 @@ public abstract class Transmitter extends Observable implements Runnable{
             }
         }
         if (hasChanged())
-            transmit();
+            notifyObservers();
         else
             Thread.sleep(1);
     }
@@ -44,10 +44,6 @@ public abstract class Transmitter extends Observable implements Runnable{
 
     public void interruptTransmitter() {
         thread.interrupt();
-    }
-
-    private void transmit(){
-        notifyObservers();
     }
 
     public abstract String getTransmitterType();

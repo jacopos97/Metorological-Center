@@ -83,6 +83,5 @@ public class Main {
         s1.interruptSensorsSet();
         s2.interruptSensorsSet();
         MeteorologicalCenter.getInstance().interruptMeteorologicalCenterTransmitter();
-
     }
 }

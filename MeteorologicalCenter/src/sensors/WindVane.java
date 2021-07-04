@@ -18,11 +18,11 @@ public class WindVane extends Sensor {
             firstTime = false;
         }
         else {
-            value = super.getActualValue() + ((float) ((Math.random() - 0.5) * 6));//gradi
+            value = super.getActualValue() + ((float) ((Math.random() - 0.5) * 6));  //gradi
             if (value < 0)
                 value = value + 360;
             else if (value > 360)
-                value = value + 360;
+                value = value - 360;
         }
         super.setActualValue(value);
     }

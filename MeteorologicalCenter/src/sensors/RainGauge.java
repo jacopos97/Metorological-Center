@@ -9,9 +9,7 @@ public class RainGauge extends Sensor {
         numRainGauge++;
     }
 
-    void generateValue() {
-        super.setActualValue((float) (Math.random() * 26)); //mm
-    }
+    void generateValue() {super.setActualValue((float) (Math.random() * 26));}  //mm
 
     public static String getType() {
         return type;

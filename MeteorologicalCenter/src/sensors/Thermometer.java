@@ -18,7 +18,7 @@ public class Thermometer extends Sensor {
             firstTime = false;
         }
         else
-            value = super.getActualValue() + ((float)((Math.random() - 0.5)* 4));// gradi
+            value = super.getActualValue() + ((float)((Math.random() - 0.5)* 4));  // gradi
         super.setActualValue(value);
     }
 

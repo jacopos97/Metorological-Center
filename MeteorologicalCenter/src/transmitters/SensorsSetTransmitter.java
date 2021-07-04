@@ -27,21 +27,6 @@ public class SensorsSetTransmitter extends Transmitter {
             return sensorsSet.getSensorsValue();
     }
 
-    public boolean setSensorsSet(SensorsSet sensorsSet) {
-        boolean temp = false;
-        if (this.sensorsSet == null) {
-            if (sensorsSet.getNumSensors() == getState().length) {
-                this.sensorsSet = sensorsSet;
-                temp = true;
-            }
-            else
-                System.out.println("Error!!! The SensorsSet doesn't match with this transmitter");
-        }
-        else
-            System.out.println("Error!!! This SensorsSetTransmitter is already associated to a SensorSet");
-        return temp;
-    }
-
     @Override
     public void addObserver(Observer observer) {
         if (sensorsSet.getSensorsSetID().getType().equals("IndoorMeter")){
@@ -53,8 +38,34 @@ public class SensorsSetTransmitter extends Transmitter {
             super.addObserver(observer);
     }
 
+    public void setSensorsSet(SensorsSet sensorsSet) {
+        if (this.sensorsSet == null) {
+            if (sensorsSet.getSensorsSetTransmitter() == null) {
+                if(sensorsSet.getNumSensors() == getState().length){
+                    this.sensorsSet = sensorsSet;
+                    sensorsSet.attachSensorsSetTransmitter(this);
+                }
+                else
+                    System.out.println("Error!!! The SensorsSet doesn't match with this transmitter");
+            }
+            else if (sensorsSet.getSensorsSetTransmitter() == this)
+                this.sensorsSet = sensorsSet;
+            else
+                System.out.println("Error!!! The SensorsSet already has a transmitter");
+        }
+        else
+            System.out.println("Error!!! This SensorsSetTransmitter is already associated to a SensorSet");
+    }
+
     public void removeSensorsSet() {
         interruptTransmitter();
-        this.sensorsSet = null;
+        SensorsSet temp = sensorsSet;
+        sensorsSet = null;
+        if(temp.getSensorsSetTransmitter() != null)
+            temp.detachSensorsSetTransmitter();
+    }
+
+    public SensorsSet getSensorsSet() {
+        return sensorsSet;
     }
 }

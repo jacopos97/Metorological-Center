@@ -127,27 +127,4 @@ public class WeatherStationTest {
         weatherStation.detachHygrometer();
         Assert.assertNull(weatherStation.getHygrometer());
     }
-
-    /*@Test
-    public void getSensorsValueTest() throws InterruptedException {
-        Barometer barometer = new Barometer();
-        weatherStation.attachBarometer(barometer);
-        Anemometer anemometer = new Anemometer();
-        weatherStation.attachAnemometer(anemometer);
-        WindVane windVane = new WindVane();
-        weatherStation.attachWindVane(windVane);
-        RainGauge rainGauge = new RainGauge();
-        weatherStation.attachRainGauge(rainGauge);
-        Thermometer thermometer = new Thermometer();
-        weatherStation.attachThermometer(thermometer);
-        Hygrometer hygrometer = new Hygrometer();
-        weatherStation.attachHygrometer(hygrometer);
-        float[] temp = weatherStation.getSensorsValue();
-        Assert.assertTrue(temp[0]>=980 && temp[0]<=1045);
-        Assert.assertTrue(temp[1]>=0 && temp[1]<=150);
-        Assert.assertTrue(temp[2]>=0 && temp[2]<=360);
-        Assert.assertTrue(temp[3]>=0 && temp[3]<=26);
-        Assert.assertTrue(temp[4]>=-5 && temp[4]<=40);
-        Assert.assertTrue(temp[5]>=0 && temp[5]<=100);
-    }*/
 }

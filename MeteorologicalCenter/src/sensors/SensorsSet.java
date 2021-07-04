@@ -8,14 +8,14 @@ import transmitters.SensorsSetTransmitter;
 public abstract class SensorsSet {
     private final int numSensors;
     private SensorsSetID sensorsSetID;
-    private float[] sensorValue;
+    private float[] sensorsValue;
     private boolean full;
     private SensorsSetTransmitter sensorsSetTransmitter;
 
     SensorsSet(int numSensors, int numSensorsSet, String type) {
         this.numSensors = numSensors;
         sensorsSetID = new SensorsSetID(numSensorsSet, type);
-        sensorValue = new float[this.numSensors];
+        sensorsValue = new float[this.numSensors];
         full = false;
         sensorsSetTransmitter = new SensorsSetTransmitter(numSensors);
         sensorsSetTransmitter.setSensorsSet(this);
@@ -26,8 +26,8 @@ public abstract class SensorsSet {
         while (!full)
             wait();
         int pos = getSensorPos(sensorID);
-        if (pos >= 0 && pos <sensorValue.length){
-            sensorValue[pos] = value;
+        if (pos >= 0 && pos < sensorsValue.length){
+            sensorsValue[pos] = value;
         }
         else
             System.out.println("Error!!! An external sensor wants to update the "+sensorsSetID.getType());
@@ -36,12 +36,12 @@ public abstract class SensorsSet {
     public synchronized float[] getSensorsValue() throws InterruptedException {
         while (!full)
             wait();
-        return Arrays.copyOf(sensorValue, sensorValue.length);
+        return Arrays.copyOf(sensorsValue, sensorsValue.length);
     }
 
     synchronized void setSensor(float value, int pos) {
         boolean temp = full;
-        this.sensorValue[pos] = value;
+        this.sensorsValue[pos] = value;
         full = isFull();
         if (full && !temp) {
             notifyAll();
@@ -49,7 +49,7 @@ public abstract class SensorsSet {
     }
 
     synchronized void removeSensor(int pos) {
-        sensorValue[pos] = 0;
+        sensorsValue[pos] = 0;
         full = false;
     }
 
@@ -59,10 +59,21 @@ public abstract class SensorsSet {
 
     public void attachSensorsSetTransmitter(SensorsSetTransmitter sensorsSetTransmitter) {
         if (this.sensorsSetTransmitter == null){
-            if (sensorsSetTransmitter.setSensorsSet(this)) {
+            if (sensorsSetTransmitter.getSensorsSet() == null) {
+                if (sensorsSetTransmitter.getState().length == getNumSensors()){
+                    this.sensorsSetTransmitter = sensorsSetTransmitter;
+                    sensorsSetTransmitter.setSensorsSet(this);
+                    sensorsSetTransmitter.startTransmitter();
+                }
+                else
+                    System.out.println("Error!!! The transmitter doesn't match with this SensorSet");
+            }
+            else if (sensorsSetTransmitter.getSensorsSet() == this){
                 this.sensorsSetTransmitter = sensorsSetTransmitter;
                 sensorsSetTransmitter.startTransmitter();
             }
+            else
+                System.out.println("Error!!! The transmitter is already associated to a SensorSet");
         }
         else
             System.out.println("Error!!! This "+sensorsSetID.getType()+" already has a transmitter");
@@ -70,8 +81,10 @@ public abstract class SensorsSet {
 
     public void detachSensorsSetTransmitter() {
         if (this.sensorsSetTransmitter != null) {
-            this.sensorsSetTransmitter.removeSensorsSet();
-            this.sensorsSetTransmitter = null;
+            SensorsSetTransmitter temp = sensorsSetTransmitter;
+            sensorsSetTransmitter = null;
+            if (temp.getSensorsSet() != null)
+                temp.removeSensorsSet();
         }
     }
 

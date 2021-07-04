@@ -9,9 +9,7 @@ public class Barometer extends Sensor {
         numBarometer++;
     }
 
-    void generateValue(){
-        super.setActualValue((float)(Math.random() * 65+ 980)); //ettoPascal
-    }
+    void generateValue(){super.setActualValue((float)(Math.random() * 65+ 980));}  //ettoPascal
 
     public static String getType() {
         return type;

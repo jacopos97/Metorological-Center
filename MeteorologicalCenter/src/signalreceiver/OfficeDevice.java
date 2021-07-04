@@ -85,7 +85,11 @@ public class OfficeDevice implements Observer {
             observedIndoorMeter = null;
         }
         else
-            System.out.println("Error!!! The officeDevice already has an indoorMeter");
+            System.out.println("Error!!! There isn't indoorMeter to detach");
+    }
+
+    public SensorsSetTransmitter getObservedIndoorMeter() {
+        return observedIndoorMeter;
     }
 }
 

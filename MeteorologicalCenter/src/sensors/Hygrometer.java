@@ -19,7 +19,7 @@ public class Hygrometer extends Sensor {
         }
         else {
             do
-                value = super.getActualValue() + ((float) ((Math.random() - 0.5) * 8));// km/h
+                value = super.getActualValue() + ((float) ((Math.random() - 0.5) * 8));// %
             while (value < 0 || value > 100);
         }
         super.setActualValue(value);
